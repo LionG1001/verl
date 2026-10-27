@@ -31,12 +31,14 @@ from transformers import PreTrainedTokenizer
 
 from verl.utils.device import get_device_name, get_torch_device
 
-try:
-    from flash_attn.ops.triton.cross_entropy import cross_entropy_loss
+FLAH_ATTN_CROSS_ENTROPY_LOSS_AVAILABLE = False
+if os.environ.get("VERL_DISABLE_FLASH_ATTN_CE", "0") != "1":
+    try:
+        from flash_attn.ops.triton.cross_entropy import cross_entropy_loss
 
-    FLAH_ATTN_CROSS_ENTROPY_LOSS_AVAILABLE = True
-except ImportError:
-    FLAH_ATTN_CROSS_ENTROPY_LOSS_AVAILABLE = False
+        FLAH_ATTN_CROSS_ENTROPY_LOSS_AVAILABLE = True
+    except ImportError:
+        pass
 
 
 try:
